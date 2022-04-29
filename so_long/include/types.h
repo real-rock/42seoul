@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 20:50:46 by jiheo             #+#    #+#             */
-/*   Updated: 2022/03/29 08:58:57 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/04/29 18:52:58 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 # define ENEMY_S00 "./assets/images/enemy/rocket_S00.xpm"
 # define ENEMY_W00 "./assets/images/enemy/rocket_W00.xpm"
 
-# define STEP_SIZE 8
+# define STEP_SIZE 40
 
 # include <stdbool.h>
 # include "../mlx_mms/mlx.h"
@@ -94,9 +94,10 @@ typedef struct s_map
 
 typedef struct s_player
 {
-	t_coordinate	coord;
-	t_direction		dir;
-	t_player_status	status;
+	t_coordinate		coord;
+	t_direction			dir;
+	t_player_status		status;
+	unsigned long long	cnt;
 }			t_player;
 
 typedef struct s_info
@@ -105,7 +106,7 @@ typedef struct s_info
 	void			*win;
 	t_map			*map;
 	t_player		player;
-	t_coordinate	enemy;
+	unsigned int	ball_count;
 }			t_info;
 
 #endif

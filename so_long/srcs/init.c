@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 13:13:06 by jiheo             #+#    #+#             */
-/*   Updated: 2022/03/29 11:39:40 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/04/29 18:37:19 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_player(t_info *info)
 
 	i = 0;
 	j = 0;
+	info->player.cnt = 0;
 	while (i < info->map->height)
 	{
 		while (j < info->map->width)
@@ -31,6 +32,8 @@ void	init_player(t_info *info)
 				info->player.status = STOP;
 				return ;
 			}
+			else if (info->map->map[i][j] == 'C')
+				info->player.cnt++;
 			j++;
 		}
 		j = 0;
@@ -53,6 +56,7 @@ void	init_game(t_info *info, char *src)
 {
 	info->mlx = mlx_init();
 	info->map = new_map(src);
+	info->ball_count = 0;
 	init_window(info);
 	init_player(info);
 }
