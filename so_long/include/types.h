@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 20:50:46 by jiheo             #+#    #+#             */
-/*   Updated: 2022/04/29 18:52:58 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/05/16 11:29:42 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@
 # define ENEMY_S00 "./assets/images/enemy/rocket_S00.xpm"
 # define ENEMY_W00 "./assets/images/enemy/rocket_W00.xpm"
 
-# define STEP_SIZE 40
+# define STEP_SIZE 32
 
 # include <stdbool.h>
-# include "../mlx_mms/mlx.h"
+# include "../mlx_opengl/mlx.h"
 
 typedef enum e_direction
 {

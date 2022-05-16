@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 20:48:24 by jiheo             #+#    #+#             */
-/*   Updated: 2022/04/29 18:47:13 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/05/16 11:31:31 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	move_player(t_info *info, t_direction dir)
 		else
 			info->player.status = LEFT;
 		_move_to_dir(info, dir);
+        check_and_exit_game(info);
 	}
 	else
 		turn_player(info, dir);
