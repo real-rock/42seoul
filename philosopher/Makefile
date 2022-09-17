@@ -6,13 +6,13 @@
 #    By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/17 09:59:04 by jiheo             #+#    #+#              #
-#    Updated: 2022/06/22 13:49:10 by jiheo            ###   ########.fr        #
+#    Updated: 2022/06/23 10:01:56 by jiheo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 PROJECT_NAME = philo
 CC = gcc
-FLAG = -WALL -WEXTRA -WERROR -I.
+FLAG = -Wall -Wextra -Werror -I.
 
 SRCS = main.c outstream.c utils.c init.c clear.c philo.c process.c
 OBJS = $(SRCS:.c=.o)
@@ -20,10 +20,10 @@ OBJS = $(SRCS:.c=.o)
 LIB = -lpthread
 
 %.o: %.c
-	$(CC) $(FLAG) $(LIB) -c $< -o $@
+	$(CC) $(FLAG) -c $< -o $@
 
 $(PROJECT_NAME): $(OBJS)
-	$(CC) $(FLAG) $(OBJS) -o $(PROJECT_NAME)
+	$(CC) $(FLAG) $(LIB) $(OBJS) -o $(PROJECT_NAME)
 
 all: $(PROJECT_NAME)
 
