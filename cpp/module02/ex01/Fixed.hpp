@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:49:47 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/16 17:08:24 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/09/19 09:50:13 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ public:
     int toInt() const;
 
     Fixed &operator=(const Fixed &cp);
-    friend std::ostream& operator<<(std::ostream& os, const Fixed& f);
 };
+
+std::ostream& operator<<(std::ostream& os, const Fixed& f);
 
 #endif
