@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:49:59 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/16 17:17:22 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/09/20 12:36:22 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@ Fixed &Fixed::operator=(const Fixed &cp) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Fixed &f) {
-    std::cout << f.toFloat();
+    os << f.toFloat();
     return os;
 }

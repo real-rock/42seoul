@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 09:30:56 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/19 10:35:22 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/09/20 12:37:45 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ Fixed& Fixed::min(Fixed& f1, Fixed& f2) {
 }
 
 const Fixed& Fixed::max(const Fixed& f1, const Fixed& f2) {
-    if (f1 > f2)
+    if (f1 < f2)
         return f2;
     else
         return f1;
 }
 
 Fixed& Fixed::max(Fixed& f1, Fixed& f2) {
-    if (f1 > f2)
+    if (f1 < f2)
         return f2;
     else
         return f1;
@@ -135,30 +135,30 @@ Fixed Fixed::operator--(int) {
 
 
 bool Fixed::operator==(const Fixed& f) const {
-    return f.getRawBits() == this->getRawBits();
+    return this->getRawBits() == f.getRawBits();
 }
 
 bool Fixed::operator!=(const Fixed& f) const {
-    return f.getRawBits() != this->getRawBits();
+    return  this->getRawBits() != f.getRawBits();
 }
 
 bool Fixed::operator<(const Fixed& f) const {
-    return f.getRawBits() < this->getRawBits();
+    return this->getRawBits() < f.getRawBits();
 }
 
 bool Fixed::operator>(const Fixed& f) const {
-    return f.getRawBits() > this->getRawBits();
+    return this->getRawBits() > f.getRawBits();
 }
 
 bool Fixed::operator<=(const Fixed& f) const {
-    return f.getRawBits() <= this->getRawBits();
+    return  this->getRawBits() <= f.getRawBits();
 }
 
 bool Fixed::operator>=(const Fixed& f) const {
-    return f.getRawBits() >= this->getRawBits();
+    return  this->getRawBits() >= f.getRawBits();
 }
 
 std::ostream& operator<<(std::ostream& os, const Fixed& f) {
-    std::cout << f.toFloat();
+    os << f.toFloat();
     return os;
 }
