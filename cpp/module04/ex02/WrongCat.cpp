@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cat.hpp                                            :+:      :+:    :+:   */
+/*   WrongCat.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/23 06:52:08 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/26 08:10:12 by jiheo            ###   ########.fr       */
+/*   Created: 2022/09/26 07:58:41 by jiheo             #+#    #+#             */
+/*   Updated: 2022/09/26 07:59:33 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CAT_H
-#define CAT_H
+#include "WrongCat.hpp"
 
-#include <iostream>
-#include "Animal.hpp"
+WrongCat::WrongCat(const std::string &type_in): WrongAnimal(type_in) {}
 
-class Cat : public Animal {
-public:
-    Cat(const std::string &type_in);
-    Cat(const Cat &d);
-    ~Cat();
+WrongCat::WrongCat(const WrongCat &d) {
+    _copy(d);
+}
 
-    Cat &operator=(const Cat &d);
-    virtual void makeSound() const;
-};
+WrongCat &WrongCat::operator=(const WrongCat &d) {
+    _copy(d);
+    return *this;
+}
 
-#endif
+WrongCat::~WrongCat() {
+    std::cout << "WrongCat destructor called" << std::endl;
+}

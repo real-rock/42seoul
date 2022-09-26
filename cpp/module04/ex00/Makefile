@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+         #
+#    By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/23 06:37:22 by jiheo             #+#    #+#              #
-#    Updated: 2022/09/23 07:11:27 by jiheo            ###   ########.fr        #
+#    Updated: 2022/09/26 08:04:16 by jiheo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = c++
 FLAG = --std=c++98 -Wall -Wextra -Werror
-SRCS = main.cpp Dog.cpp Animal.cpp Cat.cpp
+SRCS = main.cpp Dog.cpp Animal.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp
 OBJS = $(SRCS:.cpp=.o)
 PROJ_NAME = ex00
 
