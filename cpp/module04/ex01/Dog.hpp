@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 06:44:48 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/23 08:55:48 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/09/27 12:50:13 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ private:
 public:
     Dog(const std::string &type_in);
     Dog(const Dog &d);
-    ~Dog();
+    virtual ~Dog();
 
     Dog &operator=(const Dog &d);
     virtual void makeSound() const;

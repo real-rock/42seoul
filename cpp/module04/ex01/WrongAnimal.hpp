@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 07:56:06 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/26 07:57:16 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/09/27 12:52:11 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ public:
     WrongAnimal();
     WrongAnimal(const std::string &type_in);
     WrongAnimal(const WrongAnimal &a);
-    virtual ~WrongAnimal();
+    ~WrongAnimal();
     WrongAnimal &operator=(const WrongAnimal &a);
 
     std::string getType() const;
-    virtual void makeSound() const;
+    void makeSound() const;
 };
 
 #endif
