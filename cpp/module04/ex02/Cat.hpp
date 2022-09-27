@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 06:52:08 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/23 10:21:35 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/09/27 12:50:38 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ private:
 public:
     Cat(const std::string &type_in);
     Cat(const Cat &d);
-    ~Cat();
+    virtual ~Cat();
 
     Cat &operator=(const Cat &d);
     

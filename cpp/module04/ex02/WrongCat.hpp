@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WrongCat.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 07:56:21 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/26 07:59:40 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/09/27 10:27:07 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ public:
     ~WrongCat();
 
     WrongCat &operator=(const WrongCat &d);
-    // virtual void makeSound() const;
+    void makeSound() const;
 };
 
 #endif

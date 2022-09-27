@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cat.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 06:52:08 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/26 08:10:12 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/09/27 10:25:25 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ class Cat : public Animal {
 public:
     Cat(const std::string &type_in);
     Cat(const Cat &d);
-    ~Cat();
+    virtual ~Cat();
 
     Cat &operator=(const Cat &d);
     virtual void makeSound() const;
