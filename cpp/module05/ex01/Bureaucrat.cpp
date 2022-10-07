@@ -3,26 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   Bureaucrat.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:13:26 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/30 17:12:24 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/07 14:23:03 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 
-int Bureaucrat::max_grade = 1;
-int Bureaucrat::min_grade = 150;
-
 void Bureaucrat::_copy(const Bureaucrat& b) {
     setGrade(b._grade);
 }
 
-Bureaucrat::Bureaucrat(const std::string& s, int g) : _name(s), _grade(g) {}
+Bureaucrat::Bureaucrat(const std::string& s, int g) : _name(s) {
+    setGrade(g);
+}
 
 Bureaucrat::Bureaucrat(const Bureaucrat& b) : _name(b._name) {
-    _grade = b._grade;
+    setGrade(b.getGrade());
 }
 
 Bureaucrat::~Bureaucrat() {}
@@ -46,13 +45,14 @@ void Bureaucrat::setGrade(int grade) {
 void Bureaucrat::signForm(Form &f) const {
     try {
         f.beSigned(*this);
-    } catch (Form::GradeTooLowException &ge) {
-        std::cout << getName() << " couldn't sign " << f.getName() << " because grade is too low" << std::endl;
     } catch (Form::AlreadySignedException &ae) {
-        std::cout << getName() << " couldn't sign " << f.getName() << " because already signed" << std::endl;
+        std::cout << getName() << " couldn't sign " << f.getName() << std::endl;
+        return;
     } catch (std::exception &e) {
-        std::cout << getName() << " couldn't sign " << f.getName() << " because something went wrong" << std::endl;
+        std::cout << getName() << " couldn't sign " << f.getName() << " because " << e.what() << std::endl;
+        return;
     }
+    std::cout << getName() << " signed " << f.getName() << std::endl;
 }
 
 Bureaucrat& Bureaucrat::operator=(const Bureaucrat& b) {

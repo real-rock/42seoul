@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:42:35 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/30 15:46:10 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/07 13:40:57 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int main() {
     b.setGrade(30);
     while (true) {
         try {
-            b--;
+            b.decrement(1);
         } catch (std::exception &e) {
             std::cout << e.what() << std::endl;
             break;
@@ -34,7 +34,7 @@ int main() {
     b.setGrade(50);
     while (true) {
         try {
-            b++;
+            b.increment(1);
         } catch (std::exception &e) {
             std::cout << e.what() << std::endl;
             break;

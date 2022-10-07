@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PresidentialPardonForm.cpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 18:34:34 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/30 18:34:41 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/07 14:14:44 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &f) 
 PresidentialPardonForm::~PresidentialPardonForm() {}
 
 void PresidentialPardonForm::execute(const Bureaucrat &executor) const {
-    if (!isExecutable(executor))
-        throw NotExecutableException();
+    if (!getSigned())
+        throw NotSignedException();
+    if (getGradeForExec() < executor.getGrade())
+        throw GradeForExecTooLowException();
     std::cout << getName() << " has been pardoned by Zaphod Beeblebrox" << std::endl;
 }
 

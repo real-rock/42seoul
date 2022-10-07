@@ -3,18 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   Form.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:30:21 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/30 17:45:47 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/07 14:21:27 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Form.hpp"
 
-Form::Form(): _name(""), _signed(false), _grade_s(Bureaucrat::min_grade), _grade_e(Bureaucrat::min_grade) {}
+Form::Form(): _name(""), _signed(false), _grade_s(Form::min_grade), _grade_e(Form::min_grade) {}
 
-Form::Form(const std::string &s, int g_s, int g_e): _name(s), _signed(false), _grade_s(g_s), _grade_e(g_e) {}
+Form::Form(const std::string &s, int g_s, int g_e): _name(s), _signed(false), _grade_s(g_s), _grade_e(g_e) {
+    if (g_s < max_grade || g_e < max_grade)
+        throw GradeTooHighException();
+    else if (g_s > min_grade || g_e > min_grade)
+        throw GradeTooLowException();
+}
 
 Form::Form(const Form &f) : _name(f.getName()), _signed(f.getSigned()), _grade_s(f.getGradeForSign()), _grade_e(f.getGradeForExec()) {}
 
@@ -37,12 +42,10 @@ int Form::getGradeForExec() const {
 }
 
 void Form::beSigned(const Bureaucrat &b) {
-    if (_signed) {
-        std::cout << b.getName() << " couldn't sign " << _name << " because already signed" << std::endl;
-    }
+    if (_signed)
+        throw AlreadySignedException();
     if (_grade_s < b.getGrade())
-        throw GradeTooLowException();
-    std::cout << b.getName() << " signed " << _name << std::endl;
+        throw GradeForSignTooLowException();
     _signed = true;
 }
 
