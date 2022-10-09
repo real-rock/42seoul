@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ShrubberyCreationForm.cpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 18:35:00 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/30 18:35:45 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/07 14:30:02 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &f) : F
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
 void ShrubberyCreationForm::execute(const Bureaucrat &executor) const {
-    if (!isExecutable(executor))
-        throw NotExecutableException();
+    if (!getSigned())
+        throw NotSignedException();
+    if (getGradeForExec() < executor.getGrade())
+        throw GradeForExecTooLowException();
     std::ofstream outfile;
     std::string file_name = getName() + "_shrubbery";
     outfile.open(file_name.data(), std::ios::out);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:13:30 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/30 16:30:59 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/07 14:25:00 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ private:
 
     void _copy(const Bureaucrat& b);
 
-public:
-    static int max_grade;
-    static int min_grade;
+    const static int max_grade = 1;
+    const static int min_grade = 150;
 
+public:
     class GradeTooHighException : public std::exception {
     public:
         const char* what() const throw () { return "Too high grade value. Grade must be in between 1 to 150"; }
@@ -45,11 +45,10 @@ public:
     int getGrade() const;
     void setGrade(int grade);
 
+    void decrement(int q);
+    void increment(int q);
+
     Bureaucrat& operator=(const Bureaucrat& b);
-    Bureaucrat& operator++();
-    Bureaucrat operator++(int);
-    Bureaucrat& operator--();
-    Bureaucrat operator--(int);
 };
 
 std::ostream& operator<<(std::ostream& os, const Bureaucrat& b);

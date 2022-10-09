@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RobotomyRequestForm.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 18:34:48 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/30 18:34:51 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/07 14:29:52 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &f) : Form(f)
 RobotomyRequestForm::~RobotomyRequestForm() {}
 
 void RobotomyRequestForm::execute(const Bureaucrat &executor) const {
-    if (!isExecutable(executor))
-        throw NotExecutableException();
+    if (!getSigned())
+        throw NotSignedException();
+    if (getGradeForExec() < executor.getGrade())
+        throw GradeForExecTooLowException();
     std::cout << getName() << " has been robotomized successfully 50% of the time" << std::endl;
 }
 

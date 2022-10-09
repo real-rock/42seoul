@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Form.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:53:27 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/30 19:33:36 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/07 14:21:45 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ private:
     const int _grade_s;
     const int _grade_e;
 
+    const static int max_grade = 1;
+    const static int min_grade = 150;
+
 public:
     class GradeTooHighException : public std::exception {
     public:
@@ -35,14 +38,23 @@ public:
     public:
         const char* what() const throw () { return "Too low grade value. Grade must be in between 1 to 150"; }
     };
+    class GradeForSignTooLowException : public std::exception {
+    public:
+        const char* what() const throw () { return "grade for sign is too low."; }
+    };
+    class GradeForExecTooLowException : public std::exception {
+    public:
+        const char* what() const throw () { return "grade for execute is too low."; }
+    };
     class AlreadySignedException : public std::exception {
     public:
-        const char* what() const throw () { return "Already signed."; }
+        const char* what() const throw () { return "already signed."; }
     };
-    class NotExecutableException : public std::exception {
+    class NotSignedException : public std::exception {
     public:
-        const char* what() const throw () { return "Not executable form."; }
+        const char* what() const throw () { return "not signed form can't be executed."; }
     };
+    
     Form();
     Form(const std::string& s, int g_s, int g_e);
     Form(const Form& f);
@@ -54,7 +66,6 @@ public:
     int getGradeForExec() const;
 
     void beSigned(const Bureaucrat& b);
-    bool isExecutable(const Bureaucrat& executor) const;
 
     virtual void execute(const Bureaucrat& executor) const = 0;
 

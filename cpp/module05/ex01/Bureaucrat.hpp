@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:13:30 by jiheo             #+#    #+#             */
-/*   Updated: 2022/09/30 17:10:46 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/07 14:19:33 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ private:
 
     void _copy(const Bureaucrat& b);
 
+    const static int max_grade = 1;
+    const static int min_grade = 150;
+
 public:
-    static int max_grade;
-    static int min_grade;
 
     class GradeTooHighException : public std::exception {
     public:
