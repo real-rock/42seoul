@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:25:22 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/10 12:01:39 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/10 14:27:21 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ double Converter::_handle_frac(std::string s) {
     return res;
 }
 
-double Converter::_hanlde_float() {
+double Converter::_handle_float() {
     std::string::size_type dot, f;
     double exp, frac;
     int sign = 0;
@@ -138,36 +138,20 @@ void Converter::as_number() {
             _to_int();
             _type = INT;
         } catch (OverflowException &ie) {
-            try {
-                _to_double();
-                _type = DOUBLE;
-            } catch (std::exception &de) {
-                std::cout << de.what() << std::endl;
-            }
-        } catch (std::exception &e) {
-            try {
-                _to_float();
-                _type = FLOAT;
-            } catch (std::exception &de) {
-                std::cout << de.what() << std::endl;
-            }
-        }
-    }
-    else if (f == std::string::npos) {
-        try {
             _to_double();
             _type = DOUBLE;
         } catch (std::exception &e) {
-            std::cout << e.what() << std::endl;
-        }
-    }
-    else {
-        try {
             _to_float();
             _type = FLOAT;
-        } catch (std::exception &e) {
-            std::cout << e.what() << std::endl;
         }
+    }
+    else if (f == std::string::npos) {
+        _to_double();
+        _type = DOUBLE;
+    }
+    else {
+        _to_float();
+        _type = FLOAT;
     }
 }
 
@@ -186,7 +170,7 @@ void Converter::_to_int() {
         sign = static_cast<int>(_src[i] == '-');
         i++;
     }
-    for (int i = 0; i < _src.length(); i++) {
+    for ( ; i < _src.length(); i++) {
         if (!std::isdigit(_src[i]))
             throw NotConvertableException();
         d = static_cast<int>(_src[i] - '0');
@@ -208,23 +192,25 @@ void Converter::_to_int() {
 }
 
 void Converter::_to_float() {
-    float res = 0;
+    double res = 0;
 
-    res = _hanlde_float();
+    res = _handle_float();
     if (res > std::numeric_limits<float>::max() || res < std::numeric_limits<float>::min())
         throw OverflowException();
     _float_data = static_cast<float>(res);
 }
 
 void Converter::_to_double() {
-    float res = 0;
-
-    res = _hanlde_float();
-    _double_data = res;
+    _double_data = _handle_float();
 }
 
 void Converter::parse() {
-    detect_type();
+    try {
+        detect_type();
+    } catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
+        return;
+    }
     print_all();
 }
 
@@ -300,20 +286,25 @@ void Converter::print_float(std::stringstream &ss) const {
         ss << static_cast<float>(_char_data);
         return;
     case INT:
-            ss << static_cast<float>(_int_data);
-        return;
+        ss << std::fixed << static_cast<float>(_int_data);
+        break;
     case FLOAT:
-        ss << _float_data;
-        return;
+        ss << std::fixed << _float_data;
+        break;
     case DOUBLE:
-        if (_double_data > std::numeric_limits<float>::max() || _double_data < std::numeric_limits<float>::min())
-            ss << static_cast<float>(_double_data);
+        if (_double_data > std::numeric_limits<float>::max() || _double_data < std::numeric_limits<float>::min()) {
+            ss << std::fixed << static_cast<float>(_double_data) << "f";
+            return;
+        }
         else
-            ss << "impossible";
-        return;
+            ss << std::fixed << static_cast<float>(_double_data);
+        break;
     default:
         break;
     }
+    if (!is_invalid() && ss.str().find('.') == std::string::npos)
+        ss << ".0";
+    ss << "f";
 }
 
 void Converter::print_double(std::stringstream &ss) const {
@@ -323,17 +314,19 @@ void Converter::print_double(std::stringstream &ss) const {
         ss << static_cast<double>(_char_data);
         return;
     case INT:
-            ss << static_cast<double>(_int_data);
+        ss << std::fixed << static_cast<double>(_int_data);
         return;
     case FLOAT:
-        ss << static_cast<double>(_float_data);
+        ss << std::fixed << static_cast<double>(_float_data);
         return;
     case DOUBLE:
-        ss << _double_data;
+        ss << std::fixed << _double_data;
         return;
     default:
         break;
     }
+    if (!is_invalid() && ss.str().find('.') == std::string::npos)
+        ss << ".0";
 }
 
 void Converter::print_all() const {
@@ -346,15 +339,10 @@ void Converter::print_all() const {
     ss.str(std::string());
 	ss.clear();
     print_float(ss);
-    if (!is_invalid() && ss.str().find('.') == std::string::npos)
-        ss << ".0";
-    ss << "f\n";
-    std::cout << ss.str();
+    std::cout << ss.str() << std::endl;
     ss.str(std::string());
 	ss.clear();
     print_double(ss);
-    if (!is_invalid() && ss.str().find('.') == std::string::npos)
-        ss << ".0";
     std::cout << ss.str() << std::endl;
 }
 

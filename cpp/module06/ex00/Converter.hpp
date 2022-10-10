@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 14:58:20 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/10 11:24:05 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/10 13:23:34 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ private:
 
     void _handle_invalid();
     void _handle_digit();
-    double _hanlde_float();
+    double _handle_float();
 
     void _to_int();
     void _to_float();
