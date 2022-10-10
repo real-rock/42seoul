@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+         #
+#    By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/05 14:58:07 by jiheo             #+#    #+#              #
-#    Updated: 2022/10/05 16:24:46 by jiheo            ###   ########.fr        #
+#    Updated: 2022/10/10 14:30:47 by jiheo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = c++
-#FLAG = --std=c++98 -Wall -Wextra -Werror
+FLAG = --std=c++98 -Wall -Wextra -Werror
 SRCS = main.cpp Converter.cpp
 OBJS = $(SRCS:.cpp=.o)
 PROJ_NAME = ex00

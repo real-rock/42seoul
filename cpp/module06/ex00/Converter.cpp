@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:25:22 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/10 14:27:21 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/10 14:33:45 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void Converter::_handle_digit() {
 double Converter::_handle_exp(std::string s) {
     double res = 0;
 
-    for (int i = 0; i < s.length(); i++) {
+    for (std::string::size_type i = 0; i < s.length(); i++) {
         if (!std::isdigit(s[i]))
             throw NotConvertableException();
         res *= base;
@@ -162,7 +162,7 @@ bool Converter::is_invalid() const {
 
 void Converter::_to_int() {
     int res = 0;
-    int i = 0;
+    std::string::size_type i = 0;
     int sign = 0;
     int d;
 
