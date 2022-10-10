@@ -3,40 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   Converter.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:25:22 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/06 12:28:34 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/10 12:01:39 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Converter.hpp"
 
-
-bool Converter::_is_invalid(std::string &s) {
-    return s == "inf" || s == "inff" || s == "-inf" || \
-     s == "-inff" || s == "nan" || s == "nanf";
-}
-
-bool Converter::_is_invalid(double d) {
-    return abs(d) == std::numeric_limits<double>::infinity() || std::isnan(abs(d));
-}
-
 void Converter::_handle_invalid() {
-    if (_src == "inf" || _src == "inff")
-        _data = __DBL_MAX__ * 1000;
-    else if (_src == "-inf" || _src == "-inff")
-        _data = __DBL_MAX__ * (-1000);
-    else
-        _data = sqrt(-1.0);
+    if (_src == "inf" || _src == "-inf") {
+        if (_src == "inf")
+            _double_data = std::numeric_limits<double>::max() * 1000;
+        else
+            _double_data = std::numeric_limits<double>::max() * (-1000);
+        _type = DOUBLE;
+    }
+    else if (_src == "inff" || _src == "-inff") {
+        if (_src == "inff")
+            _float_data = std::numeric_limits<float>::max() * 1000;
+        else
+            _float_data = std::numeric_limits<float>::max() * (-1000);
+        _type = FLOAT;
+    }
+    else {
+        if (_src == "nanf") {
+            _float_data = sqrt(-1.0);
+            _type = FLOAT;
+        }
+        else {
+            _double_data = sqrt(-1.0);
+            _type = DOUBLE;
+        }
+    }
 }
 
-double Converter::_handle_int(std::string s) {
+void Converter::_handle_digit() {
+    if (std::isdigit(_src[0])) {
+        _int_data = static_cast<int>(_src[0] - '0');
+        _type = INT;
+    }
+    else {
+        _char_data = _src[0];
+        _type = CHAR;
+    }
+}
+
+double Converter::_handle_exp(std::string s) {
     double res = 0;
 
     for (int i = 0; i < s.length(); i++) {
-        if (s[i] < '0' || s[i] > '9')
-            throw ConvertException();
+        if (!std::isdigit(s[i]))
+            throw NotConvertableException();
         res *= base;
         res += static_cast<double>(s[i] - '0');
     }
@@ -47,59 +66,47 @@ double Converter::_handle_frac(std::string s) {
     double res = 0;
 
     for (int i = s.length() - 1; i >= 0; i--) {
-        if (s[i] < '0' || s[i] > '9')
-            throw ConvertException();
+        if (!std::isdigit(s[i]))
+            throw NotConvertableException();
         res /= base;
         res += static_cast<double>(s[i] - '0');
     }
     return res;
 }
 
-double Converter::_str_to_doub(std::string &s) {
+double Converter::_hanlde_float() {
     std::string::size_type dot, f;
-    double n, r;
+    double exp, frac;
     int sign = 0;
 
-    dot = s.find('.');
-    if (s[0] == '-')
+    dot = _src.find('.');
+    if (_src[0] == '-')
         sign = 1;
-    n = _handle_int(s.substr(sign, dot - sign));
+    exp = _handle_exp(_src.substr(sign, dot - sign));
     if (dot != std::string::npos) {
-        f = s.find('f', s.length() - 1);
-        r = _handle_frac(s.substr(dot + 1, f));
+        f = _src.find('f', _src.length() - 1);
+        frac = _handle_frac(_src.substr(dot + 1, f - dot - 1));
     }
     if (sign)
-        return (n + r / base) * (-1);
-    return n + r / base;
-}
-
-float Converter::_str_to_float(std::string &s) {
-    double d = _str_to_doub(s);
-    if (d > std::numeric_limits<float>::max() || d < std::numeric_limits<float>::min())
-        throw OverflowException();
-    return static_cast<float>(d);
-}
-
-char Converter::_str_to_char(std::string &s) {
-    
-}
-
-int Converter::_str_to_int(std::string &s) {
-    double d = _str_to_doub(s);
-    if (d > std::numeric_limits<float>::max() || d < std::numeric_limits<float>::min())
-        throw OverflowException();
-    return static_cast<float>(d);
+        return (exp + frac / base) * (-1);
+    return exp + frac / base;
 }
 
 Converter::Converter() {
     _src = std::string("");
-    _data = 0;
+    _char_data = 0;
+    _int_data = 0;
+    _float_data = 0;
+    _double_data = 0;
     _type = NONE;
 }
 
 Converter::Converter(char *s) {
     _src = std::string(s);
-    _data = 0;
+    _char_data = 0;
+    _int_data = 0;
+    _float_data = 0;
+    _double_data = 0;
     _type = NONE;
 }
 
@@ -109,65 +116,254 @@ Converter::Converter(const Converter &c) {
     *this = c;
 }
 
-void Converter::parse() {
+void Converter::detect_type() {
     if (_src.length() == 1) {
-        if (_src[0] >= '0' && _src[0] <= '9') {
-            this->_data = static_cast<double>(_src[0] - '0');
-            this->_type = INT;
-        }
-        else {
-            this->_data = static_cast<double>(_src[0]);
-            this->_type = CHAR;
-        }
+        _handle_digit();
         return;
     }
-    if (_is_invalid(_src)) {
+    if (is_invalid()) {
         _handle_invalid();
         return;
     }
-    if (_src.find('f', _src.length() - 1) != std::string::npos)
-        this->_type = FLOAT;
-    else
-        this->_type = DOUBLE;
-    this->_data = _str_to_doub(_src);
+    as_number();
+}
+
+void Converter::as_number() {
+    std::string::size_type dot, f;
+
+    dot = _src.find('.');
+    f = _src.find('f', _src.length() - 1);
+    if (dot == std::string::npos) {
+        try {
+            _to_int();
+            _type = INT;
+        } catch (OverflowException &ie) {
+            try {
+                _to_double();
+                _type = DOUBLE;
+            } catch (std::exception &de) {
+                std::cout << de.what() << std::endl;
+            }
+        } catch (std::exception &e) {
+            try {
+                _to_float();
+                _type = FLOAT;
+            } catch (std::exception &de) {
+                std::cout << de.what() << std::endl;
+            }
+        }
+    }
+    else if (f == std::string::npos) {
+        try {
+            _to_double();
+            _type = DOUBLE;
+        } catch (std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
+    else {
+        try {
+            _to_float();
+            _type = FLOAT;
+        } catch (std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
+}
+
+bool Converter::is_invalid() const {
+    return _src == "inf" || _src == "inff" || _src == "-inf" || \
+     _src == "-inff" || _src == "nan" || _src == "nanf";
+}
+
+void Converter::_to_int() {
+    int res = 0;
+    int i = 0;
+    int sign = 0;
+    int d;
+
+    if (_src[i] == '+' || _src[i] == '-') {
+        sign = static_cast<int>(_src[i] == '-');
+        i++;
+    }
+    for (int i = 0; i < _src.length(); i++) {
+        if (!std::isdigit(_src[i]))
+            throw NotConvertableException();
+        d = static_cast<int>(_src[i] - '0');
+        if (sign && res < std::numeric_limits<int>::min() / base)
+            throw OverflowException();
+        else if (!sign && res > std::numeric_limits<int>::max() / base)
+            throw OverflowException();
+        res *= base;
+        if (sign && res < std::numeric_limits<int>::min() + d)
+            throw OverflowException();
+        else if (!sign && res > std::numeric_limits<int>::max() - d)
+            throw OverflowException();
+        if (sign)
+            res -= d;
+        else
+            res += d;
+    }
+    _int_data = static_cast<int>(res);
+}
+
+void Converter::_to_float() {
+    float res = 0;
+
+    res = _hanlde_float();
+    if (res > std::numeric_limits<float>::max() || res < std::numeric_limits<float>::min())
+        throw OverflowException();
+    _float_data = static_cast<float>(res);
+}
+
+void Converter::_to_double() {
+    float res = 0;
+
+    res = _hanlde_float();
+    _double_data = res;
+}
+
+void Converter::parse() {
+    detect_type();
+    print_all();
+}
+
+void Converter::print_char(std::stringstream &ss) const {
+    ss << "char: ";
+    switch (_type) {
+    case CHAR:
+        ss << "'" << _char_data << "'";
+        return;
+    case INT:
+        if (_int_data >= 32 && _int_data <= 127) {
+            ss << "'" << static_cast<char>(_int_data) << "'";
+            return;
+        }
+    case FLOAT:
+        if (is_invalid()) {
+            ss << "impossible";
+            return;
+        }
+        if (_float_data >= 32.0f && _float_data <= 127.0f) {
+            ss << "'" << static_cast<char>(_float_data) << "'";
+            return;
+        }
+        break;
+    case DOUBLE:
+        if (is_invalid()) {
+            ss << "impossible";
+            return;
+        }
+        if (_double_data >= 32.0 && _double_data <= 127.0) {
+            ss << "'" << static_cast<char>(_double_data) << "'";
+            return;
+        }
+        break;
+    default:
+        break;
+    }
+    ss << "Non displayable";
+}
+
+void Converter::print_int(std::stringstream &ss) const {
+    ss << "int: ";
+    switch (_type) {
+    case CHAR:
+        ss << static_cast<int>(_char_data);
+        return;
+    case INT:
+        ss << _int_data;
+        return;
+    case FLOAT:
+        if (is_invalid() || \
+            (_float_data > std::numeric_limits<int>::max() || _float_data < std::numeric_limits<int>::min()))
+            ss << "impossible";
+        else
+            ss << static_cast<int>(_float_data);
+        return;
+    case DOUBLE:
+        if (is_invalid() || \
+            (_double_data > std::numeric_limits<int>::max() || _double_data < std::numeric_limits<int>::min()))
+            ss << "impossible";
+        else
+            ss << static_cast<int>(_double_data);
+        return;
+    default:
+        break;
+    }
+}
+
+void Converter::print_float(std::stringstream &ss) const {
+    ss << "float: ";
+    switch (_type) {
+    case CHAR:
+        ss << static_cast<float>(_char_data);
+        return;
+    case INT:
+            ss << static_cast<float>(_int_data);
+        return;
+    case FLOAT:
+        ss << _float_data;
+        return;
+    case DOUBLE:
+        if (_double_data > std::numeric_limits<float>::max() || _double_data < std::numeric_limits<float>::min())
+            ss << static_cast<float>(_double_data);
+        else
+            ss << "impossible";
+        return;
+    default:
+        break;
+    }
+}
+
+void Converter::print_double(std::stringstream &ss) const {
+    ss << "double: ";
+    switch (_type) {
+    case CHAR:
+        ss << static_cast<double>(_char_data);
+        return;
+    case INT:
+            ss << static_cast<double>(_int_data);
+        return;
+    case FLOAT:
+        ss << static_cast<double>(_float_data);
+        return;
+    case DOUBLE:
+        ss << _double_data;
+        return;
+    default:
+        break;
+    }
 }
 
 void Converter::print_all() const {
     std::stringstream ss;
 
-    int n = static_cast<int>(_data);
-    char c = static_cast<char>(_data);
-    float f = static_cast<float>(_data);
-
-    ss << "char: ";
-    if (n >= 32 && n <= 127)
-        ss << "'" << c << "'\n";
-    else
-        ss << "Not displayable\n";
-    ss << "int: ";
-    if (_data > INT_MAX || _data < INT_MIN)
-        ss << "Conversion to integer is impossible\n";
-    else
-        ss << n << "\n";
-    std::cout << ss.str();
+    print_char(ss);
+    ss << std::endl;
+    print_int(ss);
+    std::cout << ss.str() << std::endl;
     ss.str(std::string());
 	ss.clear();
-    ss << "float: " << f;
-    if (!_is_invalid(static_cast<double>(f)) && ss.str().find('.') == std::string::npos)
+    print_float(ss);
+    if (!is_invalid() && ss.str().find('.') == std::string::npos)
         ss << ".0";
     ss << "f\n";
     std::cout << ss.str();
     ss.str(std::string());
 	ss.clear();
-    ss << "double: " << _data;
-    if (!_is_invalid(static_cast<double>(f)) && ss.str().find('.') == std::string::npos)
+    print_double(ss);
+    if (!is_invalid() && ss.str().find('.') == std::string::npos)
         ss << ".0";
     std::cout << ss.str() << std::endl;
 }
 
 Converter& Converter::operator=(const Converter &c) {
     _src = c._src;
-    _data = c._data;
+    _char_data = c._char_data;
+    _int_data = c._int_data;
+    _float_data = c._float_data;
+    _double_data = c._double_data;
     _type = c._type;
     return *this;
 }

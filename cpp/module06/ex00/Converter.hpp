@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Converter.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 14:58:20 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/06 12:21:32 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/10 11:24:05 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,14 @@ private:
     };
 
 public:
-    class ConvertException : public std::exception {
+    class NotConvertableException : public std::exception {
     public:
         const char* what() const throw () { return "Can't convert type you selected."; }
+    };
+
+    class NotDisplayableException : public std::exception {
+    public:
+        const char* what() const throw () { return "Non displayable"; }
     };
 
     class OverflowException : public std::exception {
@@ -45,18 +50,22 @@ public:
 
 private:
     std::string _src;
-    double _data;
+    char _char_data;
+    int _int_data;
+    float _float_data;
+    double _double_data;
     Type _type;
 
-    static bool _is_invalid(std::string &s);
-    static bool _is_invalid(double n);
-    static double _handle_int(std::string s);
-    static double _handle_frac(std::string s);
-    static double _str_to_doub(std::string &s);
-    static float _str_to_float(std::string &s);
-    static char _str_to_char(std::string &s);
-    static int _str_to_int(std::string &s);
     void _handle_invalid();
+    void _handle_digit();
+    double _hanlde_float();
+
+    void _to_int();
+    void _to_float();
+    void _to_double();
+    
+    static double _handle_exp(std::string s);
+    static double _handle_frac(std::string s);
 
 public:
     Converter();
@@ -64,8 +73,18 @@ public:
     Converter(const Converter &c);
     ~Converter();
 
+    void detect_type();
+    void as_number();
+    bool is_invalid() const;
+
     void parse();
     void print_all() const;
+
+    void print_char(std::stringstream &ss) const;
+    void print_int(std::stringstream &ss) const;
+    void print_float(std::stringstream &ss) const;
+    void print_double(std::stringstream &ss) const;
+
     Converter &operator=(const Converter &c);
 };
 
