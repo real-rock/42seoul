@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:25:22 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/10 14:33:45 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/12 13:54:27 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,34 +221,42 @@ void Converter::print_char(std::stringstream &ss) const {
         ss << "'" << _char_data << "'";
         return;
     case INT:
-        if (_int_data >= 32 && _int_data <= 127) {
-            ss << "'" << static_cast<char>(_int_data) << "'";
+        if (_int_data > std::numeric_limits<char>::max() || _int_data < std::numeric_limits<char>::min())
+            break;
+        else {
+            char casted = static_cast<char>(_int_data);
+            if (casted >= 32 && casted <= 127)
+                ss << "'" << casted << "'";
+            else
+                ss << "Non displaybale";
             return;
         }
     case FLOAT:
-        if (is_invalid()) {
-            ss << "impossible";
+        if (is_invalid() || _float_data > std::numeric_limits<char>::max() || _float_data < std::numeric_limits<char>::min())
+            break;
+        else {
+            char casted = static_cast<char>(_float_data);
+            if (casted >= 32 && casted <= 127)
+                ss << "'" << casted << "'";
+            else
+                ss << "Non displayable";
             return;
         }
-        if (_float_data >= 32.0f && _float_data <= 127.0f) {
-            ss << "'" << static_cast<char>(_float_data) << "'";
-            return;
-        }
-        break;
     case DOUBLE:
-        if (is_invalid()) {
-            ss << "impossible";
+        if (is_invalid() || _double_data > std::numeric_limits<char>::max() || _double_data < std::numeric_limits<char>::min())
+            break;
+        else {
+            char casted = static_cast<char>(_double_data);
+            if (casted >= 32 && casted <= 127)
+                ss << "'" << casted << "'";
+            else
+                ss << "Non displayable";
             return;
         }
-        if (_double_data >= 32.0 && _double_data <= 127.0) {
-            ss << "'" << static_cast<char>(_double_data) << "'";
-            return;
-        }
-        break;
     default:
         break;
     }
-    ss << "Non displayable";
+    ss << "impossible";
 }
 
 void Converter::print_int(std::stringstream &ss) const {
@@ -283,7 +291,7 @@ void Converter::print_float(std::stringstream &ss) const {
     ss << "float: ";
     switch (_type) {
     case CHAR:
-        ss << static_cast<float>(_char_data);
+        ss << std::fixed << static_cast<float>(_char_data) << "f";
         return;
     case INT:
         ss << std::fixed << static_cast<float>(_int_data);
@@ -311,7 +319,7 @@ void Converter::print_double(std::stringstream &ss) const {
     ss << "double: ";
     switch (_type) {
     case CHAR:
-        ss << static_cast<double>(_char_data);
+        ss << std::fixed << static_cast<double>(_char_data);
         return;
     case INT:
         ss << std::fixed << static_cast<double>(_int_data);

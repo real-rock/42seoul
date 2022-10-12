@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:23:47 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/10 17:21:32 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/12 14:01:14 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ void identify2(Base& p) {
 int main() {
     Base *tmp = generate();
 
+    std::cout << "casting by pointer: ";
     identify(tmp);
+    std::cout << "casting by reference: ";
     identify2(*tmp);
     delete tmp;
 }
