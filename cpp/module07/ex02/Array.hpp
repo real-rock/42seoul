@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Array.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 17:02:05 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/11 17:33:52 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/16 12:05:17 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ Array<T> &Array<T>::operator=(const Array<T> &a) {
 
 template <class T>
 T &Array<T>::operator[](unsigned int n) {
-    if (size() <= n)
+    if (size() <= n || n < 0)
         throw std::out_of_range("Index is out of range.");
     return _data[n];
 }

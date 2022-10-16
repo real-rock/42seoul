@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   whatever.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiheo <jiheo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:41:36 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/11 16:43:27 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/16 11:59:07 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ void swap(T &a, T &b) {
 }
 
 template <class T>
-T min(T &a, T &b) {
-    if (a <= b)
+T &min(T &a, T &b) {
+    if (a < b)
         return a;
     else
         return b;
 }
 
 template <class T>
-T max(T &a, T &b) {
-    if (a >= b)
+T &max(T &a, T &b) {
+    if (a > b)
         return a;
     else
         return b;
