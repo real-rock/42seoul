@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 11:30:43 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/17 11:41:30 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/17 19:22:25 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,29 @@ int main() {
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl; // this line must be executed
     }
+    
+    Span e(5);
+    e.addNumber(3);
+    e.addNumber(3);
+    e.addNumber(1);
+    e.addNumber(5);
+    std::cout << e.shortestSpan() << std::endl;
 }
+
+/*
+MutantStack class
+There is a MutantStack class that inherits from std::stack and offers
+all of its member functions.
+It has an iterator. Also, it is possible to do at least the operations
+shown in the subject's examples using iterators.
+
+Class and member functions
+There is a class that complies with the requirements of the subject.
+Its member functions use STL algorithms to find their result as much as
+possible. Finding the shortest span can't be done only by subtracting
+the two lowest numbers (take a closer look at the subject example).
+
+Improved addNumber function
+There's a way to add numbers that's more practical than calling the
+addNumber() function repeatedly.
+*/

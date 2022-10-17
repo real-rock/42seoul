@@ -6,7 +6,7 @@
 /*   By: jiheo <jiheo@student.42.kr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 10:55:34 by jiheo             #+#    #+#             */
-/*   Updated: 2022/10/17 11:38:03 by jiheo            ###   ########.fr       */
+/*   Updated: 2022/10/17 19:21:52 by jiheo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ public:
     };
 
 private:
-    std::set<int> _data;
+    std::multiset<int> _data;
     unsigned int _max;
 
     void _copy(const Span &s);
